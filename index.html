@@ -7,7 +7,7 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   
   <style>
     :root {
@@ -66,10 +66,9 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      padding-bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom));
+      padding-bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom) + 12px);
     }
 
-    /* App Shell Container */
     .app-shell {
       max-width: 1080px;
       width: 100%;
@@ -81,7 +80,7 @@
       flex: 1;
     }
 
-    /* Top Command Header with 3-Dots Button */
+    /* Top Command Header */
     .top-header {
       display: flex;
       align-items: center;
@@ -102,7 +101,6 @@
       gap: 12px;
     }
 
-    /* 3-Dots Menu Trigger Button */
     .menu-trigger-btn {
       background: var(--bg-surface);
       border: 1px solid var(--border-medium);
@@ -340,14 +338,14 @@
       font-family: var(--font-mono);
     }
 
-    /* Clean Focused Stage (Beranda Tanpa Tumpukan) */
+    /* Clean Focused Stage */
     .clean-stage {
       display: flex;
       flex-direction: column;
       gap: 14px;
     }
 
-    /* Quick Filter Controls */
+    /* Filter Controls */
     .quick-filter-strip {
       display: flex;
       align-items: center;
@@ -441,7 +439,6 @@
       border-color: var(--border-focus);
     }
 
-    /* Result Counter */
     .filter-summary {
       display: flex;
       justify-content: space-between;
@@ -646,7 +643,6 @@
       color: var(--text-muted);
     }
 
-    /* Views other than Feed */
     .view-section {
       display: none;
       flex-direction: column;
@@ -657,7 +653,7 @@
       display: flex;
     }
 
-    /* Radar Panel */
+    /* Radar Panel & Real Logs */
     .radar-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -735,11 +731,12 @@
       line-height: 1.45;
     }
 
+    /* Activity Log Cards with real text & clickable buttons */
     .activity-list {
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      max-height: 440px;
+      gap: 10px;
+      max-height: 600px;
       overflow-y: auto;
     }
 
@@ -747,18 +744,45 @@
       background: var(--bg-canvas);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-md);
-      padding: 10px 12px;
+      padding: 12px 14px;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 8px;
       font-size: 12px;
+      transition: border-color 0.15s ease;
+    }
+
+    .activity-item:hover {
+      border-color: var(--border-medium);
     }
 
     .activity-header {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       font-family: var(--font-mono);
       font-size: 11px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .activity-type-tag {
+      font-weight: 600;
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+      font-size: 10px;
+    }
+
+    .activity-type-tag.hunter {
+      background: var(--blue-subtle);
+      color: var(--blue-text);
+      border: 1px solid var(--blue-border);
+    }
+
+    .activity-type-tag.replier {
+      background: var(--green-subtle);
+      color: var(--green-status);
+      border: 1px solid var(--green-border);
     }
 
     .activity-target {
@@ -767,43 +791,123 @@
       font-weight: 600;
     }
 
+    .activity-target:hover {
+      text-decoration: underline;
+    }
+
     .activity-time {
       color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 11px;
     }
 
     .activity-body {
-      color: var(--text-muted);
-      line-height: 1.4;
+      color: var(--text-main);
+      line-height: 1.5;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      white-space: pre-wrap;
     }
 
-    /* Accounts Directory */
+    .activity-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .activity-btn {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--blue-text);
+      text-decoration: none;
+      padding: 4px 10px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-sm);
+      min-height: 28px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.12s ease;
+    }
+
+    .activity-btn:hover {
+      background: var(--blue-subtle);
+      border-color: var(--blue-border);
+    }
+
+    /* Accounts Directory with Interactivity */
     .accounts-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 10px;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px;
     }
 
     .account-item-card {
       background: var(--bg-surface);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-md);
-      padding: 12px 14px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: var(--shadow-sm);
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .account-item-card:hover {
+      border-color: var(--border-medium);
+      box-shadow: var(--shadow-md);
+    }
+
+    .account-item-top {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      box-shadow: var(--shadow-sm);
+      align-items: baseline;
     }
 
     .account-name {
       font-family: var(--font-mono);
-      font-size: 13px;
-      font-weight: 600;
+      font-size: 14px;
+      font-weight: 700;
       color: var(--text-main);
     }
 
     .account-stats {
       font-size: 11px;
       color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    .account-actions-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-account-filter {
+      flex: 1;
+      background: var(--bg-canvas);
+      border: 1px solid var(--border-medium);
+      color: var(--text-main);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 6px 8px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      min-height: 32px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.12s ease;
+    }
+
+    .btn-account-filter:hover {
+      background: var(--blue-subtle);
+      border-color: var(--blue-border);
+      color: var(--blue-text);
     }
 
     .account-open-link {
@@ -811,14 +915,17 @@
       font-size: 11px;
       color: var(--blue-text);
       text-decoration: none;
-      padding: 4px 8px;
+      padding: 6px 10px;
       background: var(--bg-canvas);
-      border: 1px solid var(--border-subtle);
+      border: 1px solid var(--border-medium);
       border-radius: var(--radius-sm);
-      min-height: 28px;
+      min-height: 32px;
       display: inline-flex;
       align-items: center;
-      font-weight: 500;
+      justify-content: center;
+      font-weight: 600;
+      transition: all 0.12s ease;
+      white-space: nowrap;
     }
 
     .account-open-link:hover {
@@ -911,7 +1018,7 @@
   <!-- Top-Left 3-Dots Drawer Overlay -->
   <div class="drawer-overlay" id="drawer-overlay" aria-hidden="true"></div>
 
-  <!-- Left Sidebar Drawer (Off-Canvas Menu) -->
+  <!-- Left Sidebar Drawer -->
   <aside class="drawer-sidebar" id="drawer-sidebar" aria-label="Menu Navigasi Samping">
     <div class="drawer-header">
       <span class="drawer-brand-title">Menu Operasional</span>
@@ -991,7 +1098,6 @@
     <!-- Top Command Header with 3-Dots Button -->
     <header class="top-header">
       <div class="header-left">
-        <!-- 3-Dots Button Top-Left -->
         <button class="menu-trigger-btn" id="menu-trigger-btn" aria-label="Buka Menu Samping" title="Buka Menu Samping">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <circle cx="12" cy="5" r="2"></circle>
@@ -1012,7 +1118,7 @@
       </div>
     </header>
 
-    <!-- TAB 1: BERANDA / JADWAL FEED (Clean Light Stage) -->
+    <!-- TAB 1: BERANDA / JADWAL FEED -->
     <main id="view-feed" class="view-section active" role="tabpanel">
       
       <div class="clean-stage">
@@ -1086,7 +1192,7 @@
             <div class="flow-step-item">
               <span class="step-index">3</span>
               <div class="step-content">
-                <span class="step-label">Eksekusi Tembak Link</span>
+                <span class="step-label">Eksekusi Tembak Link (Playwright & Repliz)</span>
                 <span class="step-detail">
                   Otomatis membalas link https://dorizzstore.com/ dengan penegasan: bisa order 24 jam otomatis dan full garansi replace (QRIS).
                 </span>
@@ -1125,7 +1231,7 @@
 
   </div>
 
-  <!-- Ergonomic Bottom Navigation Bar (Thumb Friendly) -->
+  <!-- Ergonomic Bottom Navigation Bar -->
   <nav class="bottom-nav-bar" role="navigation" aria-label="Navigasi Bawah">
     <button class="bottom-nav-btn active" data-bottom-target="feed">
       <svg viewBox="0 0 24 24"><path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg>
@@ -1245,13 +1351,12 @@
         }
       };
 
-      // Switch View Function (Sync between Drawer & Bottom Nav)
+      // Switch View Function
       function switchView(target) {
         document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
         const activeSection = document.getElementById('view-' + target);
         if (activeSection) activeSection.classList.add('active');
 
-        // Update Drawer active state
         document.querySelectorAll('.drawer-nav-item[data-target]').forEach(item => {
           if (item.getAttribute('data-target') === target) {
             item.classList.add('active');
@@ -1260,7 +1365,6 @@
           }
         });
 
-        // Update Bottom Nav active state
         document.querySelectorAll('.bottom-nav-btn[data-bottom-target]').forEach(btn => {
           if (btn.getAttribute('data-bottom-target') === target) {
             btn.classList.add('active');
@@ -1273,21 +1377,27 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
 
-      // Drawer navigation click
+      // Filter by Account and jump to Jadwal
+      window.filterByAccount = function(acc) {
+        activeAccountFilter = acc;
+        document.getElementById('account-select').value = acc;
+        switchView('feed');
+        applyFilters();
+        showToast('Menampilkan jadwal @' + acc);
+      };
+
       document.querySelectorAll('.drawer-nav-item[data-target]').forEach(btn => {
         btn.addEventListener('click', function() {
           switchView(this.getAttribute('data-target'));
         });
       });
 
-      // Bottom bar navigation click
       document.querySelectorAll('.bottom-nav-btn[data-bottom-target]').forEach(btn => {
         btn.addEventListener('click', function() {
           switchView(this.getAttribute('data-bottom-target'));
         });
       });
 
-      // Drawer quick slot action
       document.querySelectorAll('.drawer-nav-item[data-slot-action]').forEach(btn => {
         btn.addEventListener('click', function() {
           const slot = this.getAttribute('data-slot-action');
@@ -1327,6 +1437,7 @@
           `;
         });
 
+      // Populate Accounts with Functional Actions
       function populateAccounts(accounts) {
         const select = document.getElementById('account-select');
         const grid = document.getElementById('accounts-grid-container');
@@ -1343,34 +1454,57 @@
           const item = document.createElement('div');
           item.className = 'account-item-card';
           item.innerHTML = `
-            <div>
-              <div class="account-name">@${acc}</div>
-              <div class="account-stats">3 post/hari &bull; order 24 jam</div>
+            <div class="account-item-top">
+              <span class="account-name">@${acc}</span>
+              <span class="account-stats">3 post/hari</span>
             </div>
-            <a href="https://www.threads.com/@${acc}" target="_blank" rel="noopener noreferrer" class="account-open-link">
-              Buka Profil
-            </a>
+            <div class="account-actions-row">
+              <button class="btn-account-filter" onclick="filterByAccount('${acc}')">
+                Lihat Jadwal
+              </button>
+              <a href="https://www.threads.net/@${acc}" target="_blank" rel="noopener noreferrer" class="account-open-link">
+                Threads.net &nearr;
+              </a>
+            </div>
           `;
           grid.appendChild(item);
         });
       }
 
+      // Populate Activity Logs with Real Data & Clickable Links
       function populateActivityLogs(snipers, replies) {
         const container = document.getElementById('activity-log-container');
         container.innerHTML = '';
 
-        const logs = [];
+        const allLogs = [];
+
+        // Add Hunter logs
         (snipers || []).forEach(s => {
-          logs.push({
-            type: 'Sniper Hunter',
-            author: s.target_author || 'user',
-            url: s.post_url || '#',
-            text: s.reply_text || '',
-            time: s.replied_at ? s.replied_at.substring(0, 16).replace('T', ' ') : 'Baru saja'
+          allLogs.push({
+            type: 'hunter',
+            typeLabel: 'Hunter Sniper',
+            author: s.author || 'kreator',
+            post_url: s.post_url || '',
+            comment_url: s.comment_url || '',
+            text: s.text || '',
+            time: s.time || 'Baru saja'
           });
         });
 
-        if (logs.length === 0) {
+        // Add Replier logs
+        (replies || []).forEach(r => {
+          allLogs.push({
+            type: 'replier',
+            typeLabel: 'Auto Replier',
+            author: r.author || 'audiens',
+            post_url: r.post_url || '',
+            comment_url: r.comment_url || '',
+            text: r.text || '',
+            time: r.time || 'Baru saja'
+          });
+        });
+
+        if (allLogs.length === 0) {
           container.innerHTML = `
             <div class="empty-state">
               <div class="empty-title">Belum ada aktivitas baru</div>
@@ -1380,17 +1514,43 @@
           return;
         }
 
-        logs.reverse().forEach(log => {
+        // Render latest first
+        allLogs.reverse().forEach(log => {
           const el = document.createElement('div');
           el.className = 'activity-item';
+
+          const targetLink = log.post_url ? `
+            <a href="${log.post_url}" target="_blank" rel="noopener noreferrer" class="activity-target">
+              @${escapeHtml(log.author)}
+            </a>
+          ` : `<span class="activity-target">@${escapeHtml(log.author)}</span>`;
+
+          let actionButtons = '';
+          if (log.post_url) {
+            actionButtons += `
+              <a href="${log.post_url}" target="_blank" rel="noopener noreferrer" class="activity-btn">
+                Buka Postingan Target &nearr;
+              </a>
+            `;
+          }
+          if (log.comment_url && log.comment_url !== log.post_url) {
+            actionButtons += `
+              <a href="${log.comment_url}" target="_blank" rel="noopener noreferrer" class="activity-btn">
+                Komentar Kita &nearr;
+              </a>
+            `;
+          }
+
           el.innerHTML = `
             <div class="activity-header">
-              <a href="${log.url}" target="_blank" rel="noopener noreferrer" class="activity-target">
-                @${log.author} (${log.type})
-              </a>
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span class="activity-type-tag ${log.type}">${log.typeLabel}</span>
+                ${targetLink}
+              </div>
               <span class="activity-time">${log.time}</span>
             </div>
             <div class="activity-body">${escapeHtml(log.text)}</div>
+            ${actionButtons ? `<div class="activity-actions">${actionButtons}</div>` : ''}
           `;
           container.appendChild(el);
         });
@@ -1471,7 +1631,7 @@
           card.innerHTML = `
             <div class="post-header">
               <div class="post-meta-left">
-                <a href="https://www.threads.com/@${item.username}" target="_blank" rel="noopener noreferrer" class="account-badge">
+                <a href="https://www.threads.net/@${item.username}" target="_blank" rel="noopener noreferrer" class="account-badge">
                   @${item.username}
                 </a>
                 <span class="slot-tag">${item.slot}</span>
@@ -1501,7 +1661,7 @@
         }
       }
 
-      // Date Segments
+      // Segment listeners
       document.querySelectorAll('.segmented-control[aria-label="Filter Tanggal"] .segment-btn').forEach(btn => {
         btn.addEventListener('click', function() {
           document.querySelectorAll('.segmented-control[aria-label="Filter Tanggal"] .segment-btn').forEach(b => b.classList.remove('active'));
@@ -1511,7 +1671,6 @@
         });
       });
 
-      // Slot Segments
       document.querySelectorAll('.segmented-control[aria-label="Filter Slot"] .segment-btn').forEach(btn => {
         btn.addEventListener('click', function() {
           document.querySelectorAll('.segmented-control[aria-label="Filter Slot"] .segment-btn').forEach(b => b.classList.remove('active'));
@@ -1521,13 +1680,11 @@
         });
       });
 
-      // Account Dropdown
       document.getElementById('account-select').addEventListener('change', function() {
         activeAccountFilter = this.value;
         applyFilters();
       });
 
-      // Search Input
       let debounceTimer = null;
       document.getElementById('search-input').addEventListener('input', function() {
         clearTimeout(debounceTimer);
@@ -1537,7 +1694,6 @@
         }, 150);
       });
 
-      // Load More
       document.getElementById('btn-load-more').addEventListener('click', function() {
         currentPage++;
         renderPosts();
