@@ -11,27 +11,29 @@
   
   <style>
     :root {
-      --bg-canvas: #090a0f;
-      --bg-surface: #12141c;
-      --bg-surface-elevated: #161924;
-      --bg-surface-active: #1c202d;
-      --bg-subtle: #191c28;
+      --bg-canvas: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-surface-elevated: #ffffff;
+      --bg-surface-active: #f1f5f9;
+      --bg-subtle: #f1f5f9;
       
-      --border-subtle: #1e2230;
-      --border-medium: #2a3145;
-      --border-focus: #3b82f6;
+      --border-subtle: #e2e8f0;
+      --border-medium: #cbd5e1;
+      --border-focus: #2563eb;
       
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --text-dim: #64748b;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-dim: #94a3b8;
       
       --blue-accent: #2563eb;
       --blue-accent-hover: #1d4ed8;
-      --blue-text: #60a5fa;
-      --blue-subtle: rgba(37, 99, 235, 0.12);
+      --blue-text: #1d4ed8;
+      --blue-subtle: #eff6ff;
+      --blue-border: #bfdbfe;
       
-      --green-status: #10b981;
-      --green-subtle: rgba(16, 185, 129, 0.12);
+      --green-status: #059669;
+      --green-subtle: #ecfdf5;
+      --green-border: #a7f3d0;
       
       --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
@@ -41,6 +43,9 @@
       --radius-lg: 12px;
       
       --bottom-nav-height: 64px;
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
     }
 
     * {
@@ -100,7 +105,7 @@
     /* 3-Dots Menu Trigger Button */
     .menu-trigger-btn {
       background: var(--bg-surface);
-      border: 1px solid var(--border-subtle);
+      border: 1px solid var(--border-medium);
       color: var(--text-main);
       width: 40px;
       height: 40px;
@@ -111,11 +116,12 @@
       cursor: pointer;
       transition: background 0.15s ease, border-color 0.15s ease;
       flex-shrink: 0;
+      box-shadow: var(--shadow-sm);
     }
 
     .menu-trigger-btn:hover {
       background: var(--bg-surface-active);
-      border-color: var(--border-medium);
+      border-color: var(--text-muted);
     }
 
     .menu-trigger-btn svg {
@@ -141,7 +147,7 @@
     .brand-sub {
       font-family: var(--font-mono);
       font-size: 11px;
-      color: var(--text-dim);
+      color: var(--text-muted);
     }
 
     .system-status {
@@ -154,6 +160,7 @@
       border-radius: var(--radius-md);
       font-family: var(--font-mono);
       font-size: 12px;
+      box-shadow: var(--shadow-sm);
     }
 
     .status-pulse {
@@ -167,7 +174,7 @@
 
     .status-time {
       color: var(--text-main);
-      font-weight: 500;
+      font-weight: 600;
     }
 
     /* Drawer Sidebar Overlay & Panel */
@@ -177,7 +184,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(4, 5, 8, 0.7);
+      background: rgba(15, 23, 42, 0.4);
       backdrop-filter: blur(4px);
       z-index: 100;
       opacity: 0;
@@ -198,13 +205,13 @@
       width: 320px;
       max-width: 85vw;
       background: var(--bg-surface);
-      border-right: 1px solid var(--border-medium);
+      border-right: 1px solid var(--border-subtle);
       z-index: 101;
       transform: translateX(-100%);
       transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       display: flex;
       flex-direction: column;
-      box-shadow: 8px 0 24px rgba(0, 0, 0, 0.6);
+      box-shadow: var(--shadow-lg);
       padding-top: env(safe-area-inset-top);
       padding-bottom: env(safe-area-inset-bottom);
     }
@@ -244,6 +251,7 @@
 
     .drawer-close-btn:hover {
       color: var(--text-main);
+      border-color: var(--border-medium);
     }
 
     .drawer-content {
@@ -261,7 +269,7 @@
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      color: var(--text-dim);
+      color: var(--text-muted);
       margin-bottom: 8px;
     }
 
@@ -286,6 +294,7 @@
       text-align: left;
       transition: all 0.12s ease;
       min-height: 42px;
+      text-decoration: none;
     }
 
     .drawer-nav-item:hover {
@@ -295,7 +304,7 @@
 
     .drawer-nav-item.active {
       background: var(--blue-subtle);
-      border-color: rgba(37, 99, 235, 0.3);
+      border-color: var(--blue-border);
       color: var(--blue-text);
     }
 
@@ -305,7 +314,7 @@
       background: var(--bg-canvas);
       padding: 2px 6px;
       border-radius: var(--radius-sm);
-      color: var(--text-dim);
+      color: var(--text-muted);
       border: 1px solid var(--border-subtle);
     }
 
@@ -354,6 +363,7 @@
       border-radius: var(--radius-md);
       padding: 3px;
       gap: 2px;
+      box-shadow: var(--shadow-sm);
     }
 
     .segment-btn {
@@ -374,10 +384,11 @@
     }
 
     .segment-btn.active {
-      background: var(--bg-surface-active);
-      color: var(--text-main);
+      background: var(--bg-canvas);
+      color: var(--blue-text);
       font-weight: 600;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+      border: 1px solid var(--border-subtle);
     }
 
     .search-row {
@@ -396,13 +407,15 @@
       color: var(--text-main);
       font-family: var(--font-sans);
       outline: none;
-      transition: border-color 0.15s ease;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
       min-height: 40px;
       width: 100%;
+      box-shadow: var(--shadow-sm);
     }
 
     .search-input:focus {
       border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px var(--blue-subtle);
     }
 
     .search-input::placeholder {
@@ -421,6 +434,7 @@
       min-width: 140px;
       min-height: 40px;
       cursor: pointer;
+      box-shadow: var(--shadow-sm);
     }
 
     .account-select-mini:focus {
@@ -433,12 +447,12 @@
       justify-content: space-between;
       align-items: center;
       font-size: 12px;
-      color: var(--text-dim);
+      color: var(--text-muted);
       padding: 0 2px;
     }
 
     .filter-summary strong {
-      color: var(--text-muted);
+      color: var(--text-main);
     }
 
     /* Post Card */
@@ -456,11 +470,13 @@
       display: flex;
       flex-direction: column;
       gap: 12px;
-      transition: border-color 0.15s ease;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      box-shadow: var(--shadow-sm);
     }
 
     .post-card:hover {
       border-color: var(--border-medium);
+      box-shadow: var(--shadow-md);
     }
 
     .post-header {
@@ -495,7 +511,7 @@
       font-size: 11px;
       padding: 2px 6px;
       border-radius: var(--radius-sm);
-      background: var(--bg-subtle);
+      background: var(--bg-canvas);
       color: var(--text-muted);
       border: 1px solid var(--border-subtle);
     }
@@ -503,7 +519,7 @@
     .time-tag {
       font-family: var(--font-mono);
       font-size: 11px;
-      color: var(--text-dim);
+      color: var(--text-muted);
     }
 
     .status-badge {
@@ -519,12 +535,12 @@
     .status-badge.published {
       background: var(--green-subtle);
       color: var(--green-status);
-      border: 1px solid rgba(16, 185, 129, 0.25);
+      border: 1px solid var(--green-border);
     }
 
     .status-badge.scheduled {
-      background: var(--bg-subtle);
-      color: var(--text-dim);
+      background: var(--bg-canvas);
+      color: var(--text-muted);
       border: 1px solid var(--border-subtle);
     }
 
@@ -554,9 +570,9 @@
     }
 
     .action-btn {
-      background: var(--bg-surface-active);
+      background: var(--bg-surface);
       border: 1px solid var(--border-medium);
-      color: var(--text-muted);
+      color: var(--text-main);
       font-size: 12px;
       font-weight: 600;
       padding: 6px 14px;
@@ -567,16 +583,18 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      box-shadow: var(--shadow-sm);
     }
 
     .action-btn:hover {
-      color: var(--text-main);
-      border-color: var(--border-focus);
+      background: var(--bg-surface-active);
+      border-color: var(--blue-accent);
+      color: var(--blue-text);
     }
 
     .action-btn.copied {
       background: var(--green-subtle);
-      border-color: var(--green-status);
+      border-color: var(--green-border);
       color: var(--green-status);
     }
 
@@ -596,11 +614,13 @@
       border-radius: var(--radius-md);
       cursor: pointer;
       min-height: 44px;
-      transition: background 0.15s ease;
+      transition: background 0.15s ease, border-color 0.15s ease;
+      box-shadow: var(--shadow-sm);
     }
 
     .btn-load-more:hover {
       background: var(--bg-surface-active);
+      border-color: var(--text-muted);
     }
 
     .empty-state {
@@ -658,6 +678,7 @@
       display: flex;
       flex-direction: column;
       gap: 12px;
+      box-shadow: var(--shadow-sm);
     }
 
     .panel-title {
@@ -684,8 +705,8 @@
       font-family: var(--font-mono);
       font-size: 11px;
       font-weight: 700;
-      background: var(--bg-canvas);
-      border: 1px solid var(--border-subtle);
+      background: var(--blue-subtle);
+      border: 1px solid var(--blue-border);
       color: var(--blue-text);
       width: 22px;
       height: 22px;
@@ -743,10 +764,11 @@
     .activity-target {
       color: var(--blue-text);
       text-decoration: none;
+      font-weight: 600;
     }
 
     .activity-time {
-      color: var(--text-dim);
+      color: var(--text-muted);
     }
 
     .activity-body {
@@ -769,6 +791,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      box-shadow: var(--shadow-sm);
     }
 
     .account-name {
@@ -780,7 +803,7 @@
 
     .account-stats {
       font-size: 11px;
-      color: var(--text-dim);
+      color: var(--text-muted);
     }
 
     .account-open-link {
@@ -795,6 +818,12 @@
       min-height: 28px;
       display: inline-flex;
       align-items: center;
+      font-weight: 500;
+    }
+
+    .account-open-link:hover {
+      border-color: var(--blue-border);
+      background: var(--blue-subtle);
     }
 
     /* Ergonomic Bottom Navigation Bar */
@@ -811,6 +840,7 @@
       justify-content: space-around;
       padding-bottom: env(safe-area-inset-bottom);
       z-index: 50;
+      box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.03);
     }
 
     .bottom-nav-btn {
@@ -837,7 +867,7 @@
 
     .bottom-nav-btn.active {
       color: var(--blue-text);
-      font-weight: 600;
+      font-weight: 700;
     }
 
     .bottom-nav-btn svg {
@@ -856,14 +886,13 @@
       bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom) + 12px);
       left: 50%;
       transform: translateX(-50%) translateY(40px);
-      background: var(--bg-surface-elevated);
-      color: var(--text-main);
-      border: 1px solid var(--border-medium);
+      background: var(--text-main);
+      color: #ffffff;
       padding: 8px 16px;
       border-radius: var(--radius-md);
       font-size: 12px;
       font-weight: 500;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+      box-shadow: var(--shadow-lg);
       opacity: 0;
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       pointer-events: none;
@@ -964,7 +993,6 @@
       <div class="header-left">
         <!-- 3-Dots Button Top-Left -->
         <button class="menu-trigger-btn" id="menu-trigger-btn" aria-label="Buka Menu Samping" title="Buka Menu Samping">
-          <!-- Clean 3 vertical dots icon -->
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <circle cx="12" cy="5" r="2"></circle>
             <circle cx="12" cy="12" r="2"></circle>
@@ -984,7 +1012,7 @@
       </div>
     </header>
 
-    <!-- TAB 1: BERANDA / JADWAL FEED (Clean & Uncluttered) -->
+    <!-- TAB 1: BERANDA / JADWAL FEED (Clean Light Stage) -->
     <main id="view-feed" class="view-section active" role="tabpanel">
       
       <div class="clean-stage">
@@ -1006,7 +1034,7 @@
 
         <!-- Search Bar & Account Select -->
         <div class="search-row">
-          <input type="text" id="search-input" class="search-input" placeholder="Cari akun atau teks..." autocomplete="off" />
+          <input type="text" id="search-input" class="search-input" placeholder="Cari akun atau kata kunci..." autocomplete="off" />
           <select id="account-select" class="account-select-mini" aria-label="Filter Akun">
             <option value="all">Semua Akun</option>
           </select>
@@ -1265,7 +1293,6 @@
           const slot = this.getAttribute('data-slot-action');
           activeSlotFilter = slot;
           
-          // Sync segmented buttons
           document.querySelectorAll('.segmented-control[aria-label="Filter Slot"] .segment-btn').forEach(b => {
             if (b.getAttribute('data-slot') === slot) b.classList.add('active');
             else b.classList.remove('active');
