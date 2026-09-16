@@ -1462,9 +1462,14 @@
               <button class="btn-account-filter" onclick="filterByAccount('${acc}')">
                 Lihat Jadwal
               </button>
-              <a href="https://www.threads.net/@${acc}" target="_blank" rel="noopener noreferrer" class="account-open-link">
-                Threads.net &nearr;
-              </a>
+              <div style="display:flex;gap:6px;align-items:center;">
+                <a href="https://www.threads.net/@${acc}" target="_blank" rel="noopener noreferrer" class="account-open-link" title="Buka Threads">
+                  Threads ↗
+                </a>
+                <a href="https://www.instagram.com/${acc}/" target="_blank" rel="noopener noreferrer" class="account-open-link" style="border-color:#cbd5e1;color:#64748b;" title="Buka Instagram">
+                  IG ↗
+                </a>
+              </div>
             </div>
           `;
           grid.appendChild(item);
