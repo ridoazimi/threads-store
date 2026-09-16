@@ -13,8 +13,9 @@
     :root {
       --bg-canvas: #090a0f;
       --bg-surface: #12141c;
-      --bg-surface-active: #171b26;
-      --bg-subtle: #1a1e2b;
+      --bg-surface-elevated: #161924;
+      --bg-surface-active: #1c202d;
+      --bg-subtle: #191c28;
       
       --border-subtle: #1e2230;
       --border-medium: #2a3145;
@@ -27,10 +28,10 @@
       --blue-accent: #2563eb;
       --blue-accent-hover: #1d4ed8;
       --blue-text: #60a5fa;
-      --blue-subtle: rgba(37, 99, 235, 0.08);
+      --blue-subtle: rgba(37, 99, 235, 0.12);
       
       --green-status: #10b981;
-      --green-subtle: rgba(16, 185, 129, 0.08);
+      --green-subtle: rgba(16, 185, 129, 0.12);
       
       --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
@@ -38,6 +39,8 @@
       --radius-sm: 4px;
       --radius-md: 8px;
       --radius-lg: 12px;
+      
+      --bottom-nav-height: 64px;
     }
 
     * {
@@ -58,29 +61,67 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      padding-bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom));
     }
 
-    /* Container */
+    /* App Shell Container */
     .app-shell {
-      max-width: 1180px;
+      max-width: 1080px;
       width: 100%;
       margin: 0 auto;
-      padding: 16px;
+      padding: 14px 16px;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 16px;
       flex: 1;
     }
 
-    /* Top Command Header */
+    /* Top Command Header with 3-Dots Button */
     .top-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding-bottom: 16px;
+      padding-bottom: 12px;
       border-bottom: 1px solid var(--border-subtle);
-      gap: 16px;
-      flex-wrap: wrap;
+      gap: 12px;
+      position: sticky;
+      top: 0;
+      background: var(--bg-canvas);
+      z-index: 40;
+      padding-top: env(safe-area-inset-top);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* 3-Dots Menu Trigger Button */
+    .menu-trigger-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+      flex-shrink: 0;
+    }
+
+    .menu-trigger-btn:hover {
+      background: var(--bg-surface-active);
+      border-color: var(--border-medium);
+    }
+
+    .menu-trigger-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
     }
 
     .brand-group {
@@ -89,29 +130,27 @@
       gap: 2px;
     }
 
-    .brand-eyebrow {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--text-dim);
-    }
-
     .brand-title {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 700;
       color: var(--text-main);
       letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .brand-sub {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-dim);
     }
 
     .system-status {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 8px;
       background: var(--bg-surface);
       border: 1px solid var(--border-subtle);
-      padding: 6px 12px;
+      padding: 6px 10px;
       border-radius: var(--radius-md);
       font-family: var(--font-mono);
       font-size: 12px;
@@ -123,10 +162,7 @@
       border-radius: 50%;
       background-color: var(--green-status);
       box-shadow: 0 0 0 3px var(--green-subtle);
-    }
-
-    .status-label {
-      color: var(--text-muted);
+      flex-shrink: 0;
     }
 
     .status-time {
@@ -134,151 +170,186 @@
       font-weight: 500;
     }
 
-    /* Command Metrics Grid: 4 distinct factual blocks */
-    .metrics-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
+    /* Drawer Sidebar Overlay & Panel */
+    .drawer-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(4, 5, 8, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.22s ease;
     }
 
-    @media (max-width: 840px) {
-      .metrics-row {
-        grid-template-columns: repeat(2, 1fr);
-      }
+    .drawer-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
     }
 
-    @media (max-width: 480px) {
-      .metrics-row {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .metric-card {
+    .drawer-sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 320px;
+      max-width: 85vw;
       background: var(--bg-surface);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-md);
-      padding: 14px 16px;
+      border-right: 1px solid var(--border-medium);
+      z-index: 101;
+      transform: translateX(-100%);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      box-shadow: 8px 0 24px rgba(0, 0, 0, 0.6);
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
     }
 
-    .metric-meta {
-      font-size: 12px;
-      color: var(--text-muted);
-      font-weight: 500;
+    .drawer-sidebar.active {
+      transform: translateX(0);
     }
 
-    .metric-value-wrap {
+    .drawer-header {
       display: flex;
-      align-items: baseline;
-      gap: 6px;
-    }
-
-    .metric-number {
-      font-size: 24px;
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      color: var(--text-main);
-      font-family: var(--font-sans);
-    }
-
-    .metric-unit {
-      font-size: 12px;
-      color: var(--text-dim);
-      font-family: var(--font-mono);
-    }
-
-    .metric-sub {
-      font-size: 11px;
-      color: var(--text-dim);
-      border-top: 1px solid var(--border-subtle);
-      padding-top: 6px;
-      margin-top: 2px;
-    }
-
-    /* Navigation Tabs */
-    .nav-bar {
-      display: flex;
-      gap: 8px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px;
       border-bottom: 1px solid var(--border-subtle);
-      padding-bottom: 8px;
     }
 
-    .nav-tab {
+    .drawer-brand-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .drawer-close-btn {
+      background: var(--bg-canvas);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      width: 34px;
+      height: 34px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      transition: color 0.12s ease;
+    }
+
+    .drawer-close-btn:hover {
+      color: var(--text-main);
+    }
+
+    .drawer-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .drawer-section-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+
+    .drawer-nav-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .drawer-nav-item {
       background: transparent;
       border: 1px solid transparent;
       color: var(--text-muted);
-      padding: 8px 16px;
       font-size: 13px;
       font-weight: 600;
+      padding: 10px 12px;
       border-radius: var(--radius-md);
       cursor: pointer;
-      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
       display: flex;
-      align-items: center;
-      gap: 8px;
-      min-height: 40px;
-    }
-
-    .nav-tab:hover {
-      color: var(--text-main);
-      background: var(--bg-surface);
-    }
-
-    .nav-tab.active {
-      background: var(--bg-surface-active);
-      color: var(--text-main);
-      border-color: var(--border-medium);
-    }
-
-    .tab-count {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      background: var(--bg-subtle);
-      color: var(--text-dim);
-      padding: 1px 6px;
-      border-radius: var(--radius-sm);
-    }
-
-    .nav-tab.active .tab-count {
-      color: var(--blue-text);
-      background: var(--blue-subtle);
-    }
-
-    /* View Sections */
-    .view-section {
-      display: none;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .view-section.active {
-      display: flex;
-    }
-
-    /* Control Toolbar */
-    .toolbar-bar {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      background: var(--bg-surface);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-lg);
-      padding: 14px;
-    }
-
-    .toolbar-primary {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
+      text-align: left;
+      transition: all 0.12s ease;
+      min-height: 42px;
+    }
+
+    .drawer-nav-item:hover {
+      background: var(--bg-surface-active);
+      color: var(--text-main);
+    }
+
+    .drawer-nav-item.active {
+      background: var(--blue-subtle);
+      border-color: rgba(37, 99, 235, 0.3);
+      color: var(--blue-text);
+    }
+
+    .drawer-badge {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      background: var(--bg-canvas);
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+      color: var(--text-dim);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .drawer-stats-box {
+      background: var(--bg-canvas);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 12px;
+    }
+
+    .drawer-stat-row {
+      display: flex;
+      justify-content: space-between;
+      color: var(--text-muted);
+    }
+
+    .drawer-stat-row strong {
+      color: var(--text-main);
+      font-family: var(--font-mono);
+    }
+
+    /* Clean Focused Stage (Beranda Tanpa Tumpukan) */
+    .clean-stage {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* Quick Filter Controls */
+    .quick-filter-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
     }
 
     .segmented-control {
       display: inline-flex;
-      background: var(--bg-canvas);
+      background: var(--bg-surface);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-md);
       padding: 3px;
@@ -306,25 +377,18 @@
       background: var(--bg-surface-active);
       color: var(--text-main);
       font-weight: 600;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.25);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.3);
     }
 
-    .toolbar-secondary {
+    .search-row {
       display: flex;
       gap: 10px;
-      flex-wrap: wrap;
       align-items: center;
     }
 
-    .search-box {
-      flex: 1;
-      min-width: 200px;
-      position: relative;
-    }
-
     .search-input {
-      width: 100%;
-      background: var(--bg-canvas);
+      flex: 1;
+      background: var(--bg-surface);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-md);
       padding: 8px 12px;
@@ -334,6 +398,7 @@
       outline: none;
       transition: border-color 0.15s ease;
       min-height: 40px;
+      width: 100%;
     }
 
     .search-input:focus {
@@ -344,39 +409,39 @@
       color: var(--text-dim);
     }
 
-    .select-dropdown {
-      background: var(--bg-canvas);
+    .account-select-mini {
+      background: var(--bg-surface);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-md);
-      padding: 8px 12px;
-      font-size: 13px;
+      padding: 8px 10px;
+      font-size: 12px;
       color: var(--text-main);
       font-family: var(--font-sans);
       outline: none;
-      min-width: 170px;
-      cursor: pointer;
+      min-width: 140px;
       min-height: 40px;
+      cursor: pointer;
     }
 
-    .select-dropdown:focus {
+    .account-select-mini:focus {
       border-color: var(--border-focus);
     }
 
-    /* Result Counter Bar */
+    /* Result Counter */
     .filter-summary {
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-size: 12px;
       color: var(--text-dim);
-      padding: 0 4px;
+      padding: 0 2px;
     }
 
     .filter-summary strong {
       color: var(--text-muted);
     }
 
-    /* Post Feed Stream: Dense, Editorial & Purpose-Built */
+    /* Post Card */
     .posts-stream {
       display: flex;
       flex-direction: column;
@@ -402,26 +467,23 @@
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      gap: 12px;
+      gap: 10px;
       flex-wrap: wrap;
     }
 
     .post-meta-left {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       flex-wrap: wrap;
     }
 
     .account-badge {
       font-family: var(--font-mono);
       font-size: 13px;
-      font-weight: 500;
+      font-weight: 600;
       color: var(--blue-text);
       text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
     }
 
     .account-badge:hover {
@@ -431,7 +493,7 @@
     .slot-tag {
       font-family: var(--font-mono);
       font-size: 11px;
-      padding: 2px 8px;
+      padding: 2px 6px;
       border-radius: var(--radius-sm);
       background: var(--bg-subtle);
       color: var(--text-muted);
@@ -440,20 +502,14 @@
 
     .time-tag {
       font-family: var(--font-mono);
-      font-size: 12px;
+      font-size: 11px;
       color: var(--text-dim);
-    }
-
-    .post-meta-right {
-      display: flex;
-      align-items: center;
-      gap: 8px;
     }
 
     .status-badge {
       font-size: 11px;
       font-weight: 600;
-      padding: 3px 8px;
+      padding: 2px 8px;
       border-radius: var(--radius-sm);
       display: inline-flex;
       align-items: center;
@@ -463,7 +519,7 @@
     .status-badge.published {
       background: var(--green-subtle);
       color: var(--green-status);
-      border: 1px solid rgba(16, 185, 129, 0.2);
+      border: 1px solid rgba(16, 185, 129, 0.25);
     }
 
     .status-badge.scheduled {
@@ -472,7 +528,6 @@
       border: 1px solid var(--border-subtle);
     }
 
-    /* Editorial Post Body */
     .post-body {
       font-size: 14px;
       line-height: 1.65;
@@ -481,20 +536,18 @@
       background: var(--bg-canvas);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-md);
-      padding: 14px;
-      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+      padding: 12px 14px;
     }
 
     .post-footer {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-top: 4px;
-      gap: 12px;
+      gap: 10px;
       flex-wrap: wrap;
     }
 
-    .rule-note {
+    .post-rule-note {
       font-size: 11px;
       color: var(--text-dim);
       font-family: var(--font-mono);
@@ -527,7 +580,6 @@
       color: var(--green-status);
     }
 
-    /* Load More / Empty State */
     .pagination-row {
       display: flex;
       justify-content: center;
@@ -548,39 +600,48 @@
     }
 
     .btn-load-more:hover {
-      background: var(--bg-subtle);
-      border-color: var(--text-muted);
+      background: var(--bg-surface-active);
     }
 
     .empty-state {
       background: var(--bg-surface);
       border: 1px dashed var(--border-medium);
       border-radius: var(--radius-lg);
-      padding: 48px 24px;
+      padding: 40px 20px;
       text-align: center;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
 
     .empty-title {
       font-weight: 600;
-      font-size: 15px;
+      font-size: 14px;
       color: var(--text-main);
     }
 
     .empty-desc {
-      font-size: 13px;
+      font-size: 12px;
       color: var(--text-muted);
-      max-width: 400px;
     }
 
-    /* Radar & Auto-Replier Tab Layout */
+    /* Views other than Feed */
+    .view-section {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .view-section.active {
+      display: flex;
+    }
+
+    /* Radar Panel */
     .radar-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 16px;
+      gap: 14px;
     }
 
     @media (max-width: 768px) {
@@ -593,30 +654,29 @@
       background: var(--bg-surface);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-lg);
-      padding: 18px;
+      padding: 16px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 12px;
     }
 
     .panel-title {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 700;
       color: var(--text-main);
-      letter-spacing: -0.01em;
       border-bottom: 1px solid var(--border-subtle);
-      padding-bottom: 10px;
+      padding-bottom: 8px;
     }
 
     .flow-steps {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
 
     .flow-step-item {
       display: flex;
-      gap: 12px;
+      gap: 10px;
       align-items: flex-start;
     }
 
@@ -624,11 +684,11 @@
       font-family: var(--font-mono);
       font-size: 11px;
       font-weight: 700;
-      background: var(--bg-subtle);
+      background: var(--bg-canvas);
       border: 1px solid var(--border-subtle);
       color: var(--blue-text);
-      width: 24px;
-      height: 24px;
+      width: 22px;
+      height: 22px;
       border-radius: var(--radius-sm);
       display: flex;
       align-items: center;
@@ -644,21 +704,21 @@
 
     .step-label {
       font-weight: 600;
-      font-size: 13px;
+      font-size: 12px;
       color: var(--text-main);
     }
 
     .step-detail {
       font-size: 12px;
       color: var(--text-muted);
-      line-height: 1.5;
+      line-height: 1.45;
     }
 
     .activity-list {
       display: flex;
       flex-direction: column;
       gap: 8px;
-      max-height: 480px;
+      max-height: 440px;
       overflow-y: auto;
     }
 
@@ -676,7 +736,6 @@
     .activity-header {
       display: flex;
       justify-content: space-between;
-      align-items: center;
       font-family: var(--font-mono);
       font-size: 11px;
     }
@@ -686,24 +745,19 @@
       text-decoration: none;
     }
 
-    .activity-target:hover {
-      text-decoration: underline;
-    }
-
     .activity-time {
       color: var(--text-dim);
     }
 
     .activity-body {
       color: var(--text-muted);
-      font-size: 12px;
       line-height: 1.4;
     }
 
-    /* Accounts Directory Tab Layout */
+    /* Accounts Directory */
     .accounts-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
       gap: 10px;
     }
 
@@ -715,17 +769,6 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      transition: border-color 0.15s ease;
-    }
-
-    .account-item-card:hover {
-      border-color: var(--border-medium);
-    }
-
-    .account-identity {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
     }
 
     .account-name {
@@ -745,235 +788,300 @@
       font-size: 11px;
       color: var(--blue-text);
       text-decoration: none;
-      padding: 6px 10px;
+      padding: 4px 8px;
       background: var(--bg-canvas);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-sm);
-      min-height: 32px;
+      min-height: 28px;
       display: inline-flex;
       align-items: center;
     }
 
-    .account-open-link:hover {
-      border-color: var(--border-medium);
+    /* Ergonomic Bottom Navigation Bar */
+    .bottom-nav-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: var(--bottom-nav-height);
+      background: var(--bg-surface);
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding-bottom: env(safe-area-inset-bottom);
+      z-index: 50;
+    }
+
+    .bottom-nav-btn {
+      flex: 1;
+      height: 100%;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 500;
+      transition: color 0.12s ease;
+      min-height: 44px;
+    }
+
+    .bottom-nav-btn:hover {
       color: var(--text-main);
     }
 
-    /* Footer */
-    .app-footer {
-      border-top: 1px solid var(--border-subtle);
-      padding: 16px;
-      margin-top: auto;
-      text-align: center;
-      font-size: 12px;
-      color: var(--text-dim);
-      font-family: var(--font-mono);
+    .bottom-nav-btn.active {
+      color: var(--blue-text);
+      font-weight: 600;
     }
 
-    /* Toast Notification */
+    .bottom-nav-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* Toast */
     .toast-box {
       position: fixed;
-      bottom: 24px;
-      right: 24px;
-      background: var(--bg-surface-active);
+      bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom) + 12px);
+      left: 50%;
+      transform: translateX(-50%) translateY(40px);
+      background: var(--bg-surface-elevated);
       color: var(--text-main);
       border: 1px solid var(--border-medium);
-      padding: 10px 16px;
+      padding: 8px 16px;
       border-radius: var(--radius-md);
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 500;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-      transform: translateY(80px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
       opacity: 0;
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       pointer-events: none;
       z-index: 1000;
+      white-space: nowrap;
     }
 
     .toast-box.visible {
-      transform: translateY(0);
+      transform: translateX(-50%) translateY(0);
       opacity: 1;
     }
   </style>
 </head>
 <body>
 
+  <!-- Top-Left 3-Dots Drawer Overlay -->
+  <div class="drawer-overlay" id="drawer-overlay" aria-hidden="true"></div>
+
+  <!-- Left Sidebar Drawer (Off-Canvas Menu) -->
+  <aside class="drawer-sidebar" id="drawer-sidebar" aria-label="Menu Navigasi Samping">
+    <div class="drawer-header">
+      <span class="drawer-brand-title">Menu Operasional</span>
+      <button class="drawer-close-btn" id="drawer-close-btn" aria-label="Tutup Menu">&times;</button>
+    </div>
+
+    <div class="drawer-content">
+      <div>
+        <div class="drawer-section-title">Navigasi Utama</div>
+        <nav class="drawer-nav-list" role="tablist">
+          <button class="drawer-nav-item active" data-target="feed" role="tab">
+            <span>Jadwal Feed</span>
+            <span class="drawer-badge" id="drawer-feed-count">2,116</span>
+          </button>
+          <button class="drawer-nav-item" data-target="radar" role="tab">
+            <span>Radar & Auto-Replier</span>
+            <span class="drawer-badge">Live</span>
+          </button>
+          <button class="drawer-nav-item" data-target="accounts" role="tab">
+            <span>Direktori 23 Akun</span>
+            <span class="drawer-badge">23</span>
+          </button>
+        </nav>
+      </div>
+
+      <div>
+        <div class="drawer-section-title">Status Armada Toko</div>
+        <div class="drawer-stats-box">
+          <div class="drawer-stat-row">
+            <span>Akun Terdaftar:</span>
+            <strong id="drawer-stat-acc">23 Akun</strong>
+          </div>
+          <div class="drawer-stat-row">
+            <span>Post Terbit:</span>
+            <strong id="drawer-stat-pub">322</strong>
+          </div>
+          <div class="drawer-stat-row">
+            <span>Ritme Harian:</span>
+            <strong>69 post / hari</strong>
+          </div>
+          <div class="drawer-stat-row">
+            <span>Scope Pasar:</span>
+            <strong>Indonesia (QRIS)</strong>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="drawer-section-title">Filter Slot Cepat</div>
+        <nav class="drawer-nav-list">
+          <button class="drawer-nav-item" data-slot-action="all">Semua Slot</button>
+          <button class="drawer-nav-item" data-slot-action="Pagi">Slot Pagi (09:15 WIB)</button>
+          <button class="drawer-nav-item" data-slot-action="Siang">Slot Siang (13:00 WIB)</button>
+          <button class="drawer-nav-item" data-slot-action="Malam">Slot Malam (19:30 WIB)</button>
+        </nav>
+      </div>
+
+      <div>
+        <div class="drawer-section-title">Pintasan Sistem</div>
+        <nav class="drawer-nav-list">
+          <a href="https://dorizzstore.com/" target="_blank" rel="noopener noreferrer" class="drawer-nav-item">
+            <span>Website Dorizz Store</span>
+            <span class="drawer-badge">&nearr;</span>
+          </a>
+          <a href="https://github.com/ridoazimi/threads-store" target="_blank" rel="noopener noreferrer" class="drawer-nav-item">
+            <span>Repositori GitHub</span>
+            <span class="drawer-badge">&nearr;</span>
+          </a>
+        </nav>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Shell -->
   <div class="app-shell">
     
-    <!-- Top Command Header -->
+    <!-- Top Command Header with 3-Dots Button -->
     <header class="top-header">
-      <div class="brand-group">
-        <span class="brand-eyebrow">Dorizz Store Operations</span>
-        <h1 class="brand-title">Threads Fleet Monitor</h1>
+      <div class="header-left">
+        <!-- 3-Dots Button Top-Left -->
+        <button class="menu-trigger-btn" id="menu-trigger-btn" aria-label="Buka Menu Samping" title="Buka Menu Samping">
+          <!-- Clean 3 vertical dots icon -->
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="5" r="2"></circle>
+            <circle cx="12" cy="12" r="2"></circle>
+            <circle cx="12" cy="19" r="2"></circle>
+          </svg>
+        </button>
+
+        <div class="brand-group">
+          <h1 class="brand-title">Dorizz Store</h1>
+          <span class="brand-sub">Threads Fleet Monitor</span>
+        </div>
       </div>
-      
+
       <div class="system-status">
         <span class="status-pulse" aria-hidden="true"></span>
-        <span class="status-label">Sistem Operasional:</span>
         <span class="status-time" id="clock-display">WIB</span>
       </div>
     </header>
 
-    <!-- Factual Metric Grid: 4 Essential Columns -->
-    <section class="metrics-row" aria-label="Ringkasan Operasional">
-      <div class="metric-card">
-        <span class="metric-meta">Akun Terhubung</span>
-        <div class="metric-value-wrap">
-          <span class="metric-number" id="stat-accounts">23</span>
-          <span class="metric-unit">akun</span>
-        </div>
-        <span class="metric-sub">Koneksi resmi via Repliz API</span>
-      </div>
-
-      <div class="metric-card">
-        <span class="metric-meta">Volume Harian</span>
-        <div class="metric-value-wrap">
-          <span class="metric-number">69</span>
-          <span class="metric-unit">post / hari</span>
-        </div>
-        <span class="metric-sub">Pagi 09:15 | Siang 13:00 | Malam 19:30</span>
-      </div>
-
-      <div class="metric-card">
-        <span class="metric-meta">Status Publikasi</span>
-        <div class="metric-value-wrap">
-          <span class="metric-number" id="stat-published">322</span>
-          <span class="metric-unit">terbit</span>
-        </div>
-        <span class="metric-sub">Dari total 2,116 slot database</span>
-      </div>
-
-      <div class="metric-card">
-        <span class="metric-meta">Automasi Balasan</span>
-        <div class="metric-value-wrap">
-          <span class="metric-number">Aktif</span>
-          <span class="metric-unit">2-step loop</span>
-        </div>
-        <span class="metric-sub">Scope: Indonesia Saja (QRIS Only)</span>
-      </div>
-    </section>
-
-    <!-- Navigation Tabs -->
-    <nav class="nav-bar" role="tablist">
-      <button class="nav-tab active" data-target="feed" role="tab" aria-selected="true">
-        Jadwal Feed <span class="tab-count" id="count-feed-tab">2,116</span>
-      </button>
-      <button class="nav-tab" data-target="radar" role="tab" aria-selected="false">
-        Radar & Auto-Replier
-      </button>
-      <button class="nav-tab" data-target="accounts" role="tab" aria-selected="false">
-        Daftar 23 Akun Toko
-      </button>
-    </nav>
-
-    <!-- TAB 1: FEED SCHEDULES -->
-    <section id="view-feed" class="view-section active" role="tabpanel">
+    <!-- TAB 1: BERANDA / JADWAL FEED (Clean & Uncluttered) -->
+    <main id="view-feed" class="view-section active" role="tabpanel">
       
-      <!-- Toolbar Filter -->
-      <div class="toolbar-bar">
-        <div class="toolbar-primary">
+      <div class="clean-stage">
+        <!-- Quick Filter Row -->
+        <div class="quick-filter-strip">
           <div class="segmented-control" role="group" aria-label="Filter Tanggal">
-            <button class="segment-btn active" data-date="all">Semua Tanggal</button>
-            <button class="segment-btn" data-date="today">Hari Ini (16 Sep)</button>
-            <button class="segment-btn" data-date="tomorrow">Besok (17 Sep)</button>
+            <button class="segment-btn active" data-date="all">Semua</button>
+            <button class="segment-btn" data-date="today">Hari Ini</button>
+            <button class="segment-btn" data-date="tomorrow">Besok</button>
           </div>
 
           <div class="segmented-control" role="group" aria-label="Filter Slot">
             <button class="segment-btn active" data-slot="all">Semua Slot</button>
-            <button class="segment-btn" data-slot="Pagi">Pagi (09:15)</button>
-            <button class="segment-btn" data-slot="Siang">Siang (13:00)</button>
-            <button class="segment-btn" data-slot="Malam">Malam (19:30)</button>
+            <button class="segment-btn" data-slot="Pagi">Pagi</button>
+            <button class="segment-btn" data-slot="Siang">Siang</button>
+            <button class="segment-btn" data-slot="Malam">Malam</button>
           </div>
         </div>
 
-        <div class="toolbar-secondary">
-          <div class="search-box">
-            <input type="text" id="search-input" class="search-input" placeholder="Cari akun atau kata kunci postingan..." autocomplete="off" />
-          </div>
-
-          <select id="account-select" class="select-dropdown" aria-label="Filter Akun Toko">
-            <option value="all">Semua Akun (23)</option>
+        <!-- Search Bar & Account Select -->
+        <div class="search-row">
+          <input type="text" id="search-input" class="search-input" placeholder="Cari akun atau teks..." autocomplete="off" />
+          <select id="account-select" class="account-select-mini" aria-label="Filter Akun">
+            <option value="all">Semua Akun</option>
           </select>
         </div>
+
+        <!-- Counter Label -->
+        <div class="filter-summary">
+          <div>Menampilkan <strong id="visible-count">0</strong> postingan</div>
+          <div id="filter-state-label">Filter: Semua Jadwal</div>
+        </div>
+
+        <!-- Posts Container -->
+        <div class="posts-stream" id="posts-container">
+          <!-- Injected via JS -->
+        </div>
+
+        <!-- Pagination / Load More -->
+        <div class="pagination-row" id="pagination-wrapper">
+          <button id="btn-load-more" class="btn-load-more">Tampilkan Lebih Banyak</button>
+        </div>
       </div>
 
-      <!-- Filter Summary -->
-      <div class="filter-summary">
-        <div>Menampilkan <strong id="visible-count">0</strong> postingan</div>
-        <div id="filter-state-label">Filter aktif: Semua Jadwal</div>
-      </div>
-
-      <!-- Post List Container -->
-      <div class="posts-stream" id="posts-container">
-        <!-- Injected via JavaScript -->
-      </div>
-
-      <!-- Pagination / Load More -->
-      <div class="pagination-row" id="pagination-wrapper">
-        <button id="btn-load-more" class="btn-load-more">Tampilkan Lebih Banyak</button>
-      </div>
-
-    </section>
+    </main>
 
     <!-- TAB 2: RADAR & AUTO-REPLIER -->
     <section id="view-radar" class="view-section" role="tabpanel">
       <div class="radar-grid">
-        
-        <!-- Panel 1: Dokumen Alur Kerja -->
         <div class="doc-panel">
           <h2 class="panel-title">Skema 2-Step Permission Loop</h2>
-          
           <div class="flow-steps">
             <div class="flow-step-item">
               <span class="step-index">1</span>
               <div class="step-content">
                 <span class="step-label">Komentar Gerilya / Sniper (Playwright)</span>
                 <span class="step-detail">
-                  Mendeteksi keluhan CapCut di postingan orang lain. Memberikan solusi tulus tanpa menyertakan link dan tanpa suruh klik bio. Ditutup CTA santai: "Kalau butuh linknya, balas aja 'mau' ya kak".
+                  Mendeteksi keluhan CapCut di postingan orang lain. Memberikan solusi tulus tanpa link dan tanpa suruh buka bio. Ditutup CTA: "Kalau butuh linknya, balas aja 'mau' ya kak".
                 </span>
               </div>
             </div>
-
             <div class="flow-step-item">
               <span class="step-index">2</span>
               <div class="step-content">
                 <span class="step-label">Audiens Membalas Respon</span>
                 <span class="step-detail">
-                  Audiens membalas dengan variasi kata: "mau", "mauuu", "mw", "minat", atau "info".
+                  Audiens membalas dengan variasi: "mau", "mauuu", "mw", "minat", atau "info".
                 </span>
               </div>
             </div>
-
             <div class="flow-step-item">
               <span class="step-index">3</span>
               <div class="step-content">
-                <span class="step-label">Eksekusi Tembak Link (Playwright & Repliz)</span>
+                <span class="step-label">Eksekusi Tembak Link</span>
                 <span class="step-detail">
-                  Sistem otomatis membalas dengan link https://dorizzstore.com/ dengan penegasan: bisa order 24 jam otomatis dan full garansi replace.
+                  Otomatis membalas link https://dorizzstore.com/ dengan penegasan: bisa order 24 jam otomatis dan full garansi replace (QRIS).
                 </span>
               </div>
             </div>
-
             <div class="flow-step-item">
               <span class="step-index">4</span>
               <div class="step-content">
-                <span class="step-label">Filter Regional Mutlak (Indonesia Only)</span>
+                <span class="step-label">Scope Khusus Indonesia</span>
                 <span class="step-detail">
-                  Hanya memproses bahasa Indonesia. Postingan atau komentar berbahasa asing otomatis di-skip karena sistem pembayaran Dorizz Store saat ini fokus pada QRIS lokal.
+                  Semua komentar bahasa asing otomatis di-skip karena sistem pembayaran Dorizz Store saat ini fokus pada QRIS lokal.
                 </span>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Panel 2: Log Aktivitas Nyata -->
         <div class="doc-panel">
           <h2 class="panel-title">Log Aktivitas Hunter & Replier</h2>
           <div class="activity-list" id="activity-log-container">
-            <!-- Injected via JavaScript -->
+            <!-- Injected via JS -->
           </div>
         </div>
-
       </div>
     </section>
 
@@ -982,24 +1090,41 @@
       <div class="doc-panel">
         <h2 class="panel-title">Daftar 23 Akun Toko Resmi Terjadwal</h2>
         <div class="accounts-grid" id="accounts-grid-container">
-          <!-- Injected via JavaScript -->
+          <!-- Injected via JS -->
         </div>
       </div>
     </section>
 
-    <!-- Clean Technical Footer -->
-    <footer class="app-footer">
-      Dorizz Store Fleet Operations &bull; Database Synchronized 2026 &bull; GitHub Pages Edition
-    </footer>
-
   </div>
+
+  <!-- Ergonomic Bottom Navigation Bar (Thumb Friendly) -->
+  <nav class="bottom-nav-bar" role="navigation" aria-label="Navigasi Bawah">
+    <button class="bottom-nav-btn active" data-bottom-target="feed">
+      <svg viewBox="0 0 24 24"><path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg>
+      <span>Jadwal</span>
+    </button>
+    
+    <button class="bottom-nav-btn" data-bottom-target="radar">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 3a9 9 0 019 9M12 12l5-5"></path></svg>
+      <span>Radar</span>
+    </button>
+
+    <button class="bottom-nav-btn" data-bottom-target="accounts">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 00-3-3.87m-4-12a4 4 0 010 7.75"></path></svg>
+      <span>23 Akun</span>
+    </button>
+
+    <button class="bottom-nav-btn" id="bottom-menu-btn">
+      <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>
+      <span>Menu</span>
+    </button>
+  </nav>
 
   <!-- Toast Notification -->
   <div id="toast" class="toast-box" role="status" aria-live="polite">Teks postingan berhasil disalin</div>
 
   <script>
     (function() {
-      // State Management
       let allItems = [];
       let filteredItems = [];
       let currentPage = 1;
@@ -1010,20 +1135,50 @@
       let activeAccountFilter = 'all';
       let searchKeyword = '';
 
-      // Live Clock WIB
+      // Live Clock
       function updateClock() {
         const now = new Date();
-        const wibTime = new Intl.DateTimeFormat('id-ID', {
+        const wib = new Intl.DateTimeFormat('id-ID', {
           timeZone: 'Asia/Jakarta',
           hour: '2-digit',
           minute: '2-digit',
           second: '2-digit',
           hour12: false
         }).format(now);
-        document.getElementById('clock-display').textContent = wibTime + ' WIB';
+        document.getElementById('clock-display').textContent = wib + ' WIB';
       }
       setInterval(updateClock, 1000);
       updateClock();
+
+      // Drawer Sidebar Toggle
+      const overlay = document.getElementById('drawer-overlay');
+      const sidebar = document.getElementById('drawer-sidebar');
+      const triggerBtn = document.getElementById('menu-trigger-btn');
+      const closeBtn = document.getElementById('drawer-close-btn');
+      const bottomMenuBtn = document.getElementById('bottom-menu-btn');
+
+      function openDrawer() {
+        overlay.classList.add('active');
+        sidebar.classList.add('active');
+        overlay.setAttribute('aria-hidden', 'false');
+      }
+
+      function closeDrawer() {
+        overlay.classList.remove('active');
+        sidebar.classList.remove('active');
+        overlay.setAttribute('aria-hidden', 'true');
+      }
+
+      triggerBtn.addEventListener('click', openDrawer);
+      bottomMenuBtn.addEventListener('click', openDrawer);
+      closeBtn.addEventListener('click', closeDrawer);
+      overlay.addEventListener('click', closeDrawer);
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && sidebar.classList.contains('active')) {
+          closeDrawer();
+        }
+      });
 
       // Toast Notification
       function showToast(msg) {
@@ -1039,14 +1194,13 @@
           navigator.clipboard.writeText(text).then(() => {
             btn.classList.add('copied');
             btn.textContent = 'Tersalin!';
-            showToast('Teks postingan berhasil disalin ke clipboard');
+            showToast('Teks postingan berhasil disalin');
             setTimeout(() => {
               btn.classList.remove('copied');
               btn.textContent = 'Salin Teks';
             }, 1800);
           });
         } else {
-          // Fallback
           const ta = document.createElement('textarea');
           ta.value = text;
           document.body.appendChild(ta);
@@ -1063,37 +1217,89 @@
         }
       };
 
+      // Switch View Function (Sync between Drawer & Bottom Nav)
+      function switchView(target) {
+        document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
+        const activeSection = document.getElementById('view-' + target);
+        if (activeSection) activeSection.classList.add('active');
+
+        // Update Drawer active state
+        document.querySelectorAll('.drawer-nav-item[data-target]').forEach(item => {
+          if (item.getAttribute('data-target') === target) {
+            item.classList.add('active');
+          } else {
+            item.classList.remove('active');
+          }
+        });
+
+        // Update Bottom Nav active state
+        document.querySelectorAll('.bottom-nav-btn[data-bottom-target]').forEach(btn => {
+          if (btn.getAttribute('data-bottom-target') === target) {
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
+        });
+
+        closeDrawer();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      // Drawer navigation click
+      document.querySelectorAll('.drawer-nav-item[data-target]').forEach(btn => {
+        btn.addEventListener('click', function() {
+          switchView(this.getAttribute('data-target'));
+        });
+      });
+
+      // Bottom bar navigation click
+      document.querySelectorAll('.bottom-nav-btn[data-bottom-target]').forEach(btn => {
+        btn.addEventListener('click', function() {
+          switchView(this.getAttribute('data-bottom-target'));
+        });
+      });
+
+      // Drawer quick slot action
+      document.querySelectorAll('.drawer-nav-item[data-slot-action]').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const slot = this.getAttribute('data-slot-action');
+          activeSlotFilter = slot;
+          
+          // Sync segmented buttons
+          document.querySelectorAll('.segmented-control[aria-label="Filter Slot"] .segment-btn').forEach(b => {
+            if (b.getAttribute('data-slot') === slot) b.classList.add('active');
+            else b.classList.remove('active');
+          });
+
+          switchView('feed');
+          applyFilters();
+        });
+      });
+
       // Load Data
       fetch('data.json')
         .then(res => res.json())
         .then(data => {
           allItems = data.items || [];
           
-          // Update Header Counters
-          document.getElementById('stat-accounts').textContent = (data.accounts || []).length || '23';
-          document.getElementById('stat-published').textContent = data.published_count || '322';
-          document.getElementById('count-feed-tab').textContent = allItems.length.toLocaleString('id-ID');
+          document.getElementById('drawer-feed-count').textContent = allItems.length.toLocaleString('id-ID');
+          document.getElementById('drawer-stat-acc').textContent = (data.accounts || []).length + ' Akun';
+          document.getElementById('drawer-stat-pub').textContent = data.published_count || '322';
 
-          // Populate Account Select & Directory Grid
           populateAccounts(data.accounts || []);
-
-          // Populate Activity Logs
           populateActivityLogs(data.recent_sniper || [], data.recent_replies || []);
-
-          // Initial Filter Apply
           applyFilters();
         })
         .catch(err => {
-          console.error('Failed to load data.json:', err);
+          console.error('Data load error:', err);
           document.getElementById('posts-container').innerHTML = `
             <div class="empty-state">
               <div class="empty-title">Gagal memuat database jadwal</div>
-              <div class="empty-desc">Pastikan file data.json tersedia dan formatnya valid.</div>
+              <div class="empty-desc">Pastikan file data.json tersedia.</div>
             </div>
           `;
         });
 
-      // Populate Accounts
       function populateAccounts(accounts) {
         const select = document.getElementById('account-select');
         const grid = document.getElementById('accounts-grid-container');
@@ -1102,19 +1308,17 @@
         grid.innerHTML = '';
 
         accounts.forEach(acc => {
-          // Dropdown option
           const opt = document.createElement('option');
           opt.value = acc;
           opt.textContent = '@' + acc;
           select.appendChild(opt);
 
-          // Grid item
           const item = document.createElement('div');
           item.className = 'account-item-card';
           item.innerHTML = `
-            <div class="account-identity">
-              <span class="account-name">@${acc}</span>
-              <span class="account-stats">3 post/hari &bull; 24 jam order</span>
+            <div>
+              <div class="account-name">@${acc}</div>
+              <div class="account-stats">3 post/hari &bull; order 24 jam</div>
             </div>
             <a href="https://www.threads.com/@${acc}" target="_blank" rel="noopener noreferrer" class="account-open-link">
               Buka Profil
@@ -1124,20 +1328,17 @@
         });
       }
 
-      // Populate Activity Logs
       function populateActivityLogs(snipers, replies) {
         const container = document.getElementById('activity-log-container');
         container.innerHTML = '';
 
         const logs = [];
-
         (snipers || []).forEach(s => {
           logs.push({
             type: 'Sniper Hunter',
             author: s.target_author || 'user',
             url: s.post_url || '#',
             text: s.reply_text || '',
-            keyword: s.keyword || 'intent',
             time: s.replied_at ? s.replied_at.substring(0, 16).replace('T', ' ') : 'Baru saja'
           });
         });
@@ -1146,7 +1347,7 @@
           container.innerHTML = `
             <div class="empty-state">
               <div class="empty-title">Belum ada aktivitas baru</div>
-              <div class="empty-desc">Bot hunter beroperasi otomatis setiap 5-10 menit.</div>
+              <div class="empty-desc">Bot hunter beroperasi otomatis di background.</div>
             </div>
           `;
           return;
@@ -1174,17 +1375,12 @@
         const tomorrowStr = '2026-09-17';
 
         filteredItems = allItems.filter(item => {
-          // Date Filter
           if (activeDateFilter === 'today' && item.date !== todayStr) return false;
           if (activeDateFilter === 'tomorrow' && item.date !== tomorrowStr) return false;
 
-          // Slot Filter
           if (activeSlotFilter !== 'all' && item.slot !== activeSlotFilter) return false;
-
-          // Account Filter
           if (activeAccountFilter !== 'all' && item.username !== activeAccountFilter) return false;
 
-          // Search Filter
           if (searchKeyword) {
             const kw = searchKeyword.toLowerCase();
             const textMatch = (item.text || '').toLowerCase().includes(kw);
@@ -1204,18 +1400,17 @@
         document.getElementById('visible-count').textContent = filteredItems.length.toLocaleString('id-ID');
         
         let label = [];
-        if (activeDateFilter === 'today') label.push('Hari Ini (16 Sep)');
-        else if (activeDateFilter === 'tomorrow') label.push('Besok (17 Sep)');
+        if (activeDateFilter === 'today') label.push('Hari Ini');
+        else if (activeDateFilter === 'tomorrow') label.push('Besok');
         else label.push('Semua Tanggal');
 
         if (activeSlotFilter !== 'all') label.push('Slot ' + activeSlotFilter);
         if (activeAccountFilter !== 'all') label.push('@' + activeAccountFilter);
         if (searchKeyword) label.push('"' + searchKeyword + '"');
 
-        document.getElementById('filter-state-label').textContent = 'Filter aktif: ' + label.join(' &bull; ');
+        document.getElementById('filter-state-label').textContent = 'Filter: ' + label.join(' &bull; ');
       }
 
-      // Render Posts
       function renderPosts() {
         const container = document.getElementById('posts-container');
         const loadMoreBtn = document.getElementById('pagination-wrapper');
@@ -1235,9 +1430,6 @@
           return;
         }
 
-        const slice = filteredItems.slice(0, currentPage * PAGE_SIZE);
-
-        // Append items for current page
         const startIdx = (currentPage - 1) * PAGE_SIZE;
         const pageItems = filteredItems.slice(startIdx, currentPage * PAGE_SIZE);
 
@@ -1248,9 +1440,6 @@
           const isPublished = Boolean(item.published);
           const statusClass = isPublished ? 'published' : 'scheduled';
           const statusText = isPublished ? 'Terbit' : 'Terjadwal';
-
-          const safeText = escapeHtml(item.text || '');
-          const escapedForAttr = (item.text || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 
           card.innerHTML = `
             <div class="post-header">
@@ -1266,10 +1455,10 @@
               </div>
             </div>
 
-            <div class="post-body">${safeText}</div>
+            <div class="post-body">${escapeHtml(item.text || '')}</div>
 
             <div class="post-footer">
-              <span class="rule-note">CTA 'mau' &bull; Tanpa direct link &bull; QRIS Support</span>
+              <span class="post-rule-note">CTA 'mau' &bull; No direct link &bull; QRIS</span>
               <button class="action-btn" onclick="copyPostText(this, ${JSON.stringify(item.text || '')})">
                 Salin Teks
               </button>
@@ -1278,7 +1467,6 @@
           container.appendChild(card);
         });
 
-        // Toggle Load More button
         if (currentPage * PAGE_SIZE < filteredItems.length) {
           loadMoreBtn.style.display = 'flex';
         } else {
@@ -1286,8 +1474,7 @@
         }
       }
 
-      // Event Listeners for Controls
-      // Date segments
+      // Date Segments
       document.querySelectorAll('.segmented-control[aria-label="Filter Tanggal"] .segment-btn').forEach(btn => {
         btn.addEventListener('click', function() {
           document.querySelectorAll('.segmented-control[aria-label="Filter Tanggal"] .segment-btn').forEach(b => b.classList.remove('active'));
@@ -1297,7 +1484,7 @@
         });
       });
 
-      // Slot segments
+      // Slot Segments
       document.querySelectorAll('.segmented-control[aria-label="Filter Slot"] .segment-btn').forEach(btn => {
         btn.addEventListener('click', function() {
           document.querySelectorAll('.segmented-control[aria-label="Filter Slot"] .segment-btn').forEach(b => b.classList.remove('active'));
@@ -1307,13 +1494,13 @@
         });
       });
 
-      // Account dropdown
+      // Account Dropdown
       document.getElementById('account-select').addEventListener('change', function() {
         activeAccountFilter = this.value;
         applyFilters();
       });
 
-      // Search input with debounce
+      // Search Input
       let debounceTimer = null;
       document.getElementById('search-input').addEventListener('input', function() {
         clearTimeout(debounceTimer);
@@ -1323,39 +1510,18 @@
         }, 150);
       });
 
-      // Load More Button
+      // Load More
       document.getElementById('btn-load-more').addEventListener('click', function() {
         currentPage++;
         renderPosts();
       });
 
-      // Tab Navigation
-      document.querySelectorAll('.nav-tab').forEach(tab => {
-        tab.addEventListener('click', function() {
-          const target = this.getAttribute('data-target');
-          
-          document.querySelectorAll('.nav-tab').forEach(t => {
-            t.classList.remove('active');
-            t.setAttribute('aria-selected', 'false');
-          });
-          this.classList.add('active');
-          this.setAttribute('aria-selected', 'true');
-
-          document.querySelectorAll('.view-section').forEach(sec => {
-            sec.classList.remove('active');
-          });
-          document.getElementById('view-' + target).classList.add('active');
-        });
-      });
-
-      // Helper HTML Escape
       function escapeHtml(str) {
         return str
           .replace(/&/g, '&amp;')
           .replace(/</g, '&lt;')
           .replace(/>/g, '&gt;');
       }
-
     })();
   </script>
 </body>
