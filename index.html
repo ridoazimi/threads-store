@@ -1445,28 +1445,37 @@
         select.innerHTML = '<option value="all">Semua Akun (' + accounts.length + ')</option>';
         grid.innerHTML = '';
 
+        const threadsSet = new Set(["digitalconnectid", "cans.utp", "dorizzservice", "digitalmateid", "dorizzdigital", "digitalhubindonesia", "azzimi_"]);
+        
         accounts.forEach(acc => {
+          const hasThreads = threadsSet.has(acc);
           const opt = document.createElement('option');
           opt.value = acc;
-          opt.textContent = '@' + acc;
+          opt.textContent = '@' + acc + (hasThreads ? ' (Threads)' : ' (IG Only)');
           select.appendChild(opt);
+
+          const badge = hasThreads 
+            ? '<span style="font-size:10px;font-weight:700;color:#059669;background:#ecfdf5;padding:2px 6px;border-radius:4px;border:1px solid #a7f3d0;">Threads Aktif</span>' 
+            : '<span style="font-size:10px;font-weight:600;color:#d97706;background:#fffbeb;padding:2px 6px;border-radius:4px;border:1px solid #fde68a;">IG Saja (Belum Login Threads)</span>';
+
+          const threadBtn = hasThreads
+            ? `<a href="https://www.threads.net/@${acc}" target="_blank" rel="noopener noreferrer" class="account-open-link" style="background:#2563eb;color:#fff;border-color:#2563eb;" title="Buka Threads">Threads ↗</a>`
+            : `<button class="account-open-link" style="opacity:0.5;cursor:not-allowed;border-color:#cbd5e1;color:#94a3b8;" title="Belum dibuat profil Threads" onclick="alert('Akun @${acc} baru terdaftar sebagai Instagram di Repliz. Perlu dibuka aplikasinya & login sekali di Threads.')">Threads -</button>`;
 
           const item = document.createElement('div');
           item.className = 'account-item-card';
           item.innerHTML = `
             <div class="account-item-top">
               <span class="account-name">@${acc}</span>
-              <span class="account-stats">3 post/hari</span>
+              ${badge}
             </div>
             <div class="account-actions-row">
               <button class="btn-account-filter" onclick="filterByAccount('${acc}')">
                 Lihat Jadwal
               </button>
               <div style="display:flex;gap:6px;align-items:center;">
-                <a href="https://www.threads.net/@${acc}" target="_blank" rel="noopener noreferrer" class="account-open-link" title="Buka Threads">
-                  Threads ↗
-                </a>
-                <a href="https://www.instagram.com/${acc}/" target="_blank" rel="noopener noreferrer" class="account-open-link" style="border-color:#cbd5e1;color:#64748b;" title="Buka Instagram">
+                ${threadBtn}
+                <a href="https://www.instagram.com/${acc}/" target="_blank" rel="noopener noreferrer" class="account-open-link" style="border-color:#cbd5e1;color:#64748b;" title="Buka Instagram Resmi">
                   IG ↗
                 </a>
               </div>

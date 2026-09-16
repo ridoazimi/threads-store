@@ -19437,5 +19437,168 @@
       "text": "Audiens mengirim respon intent 'mau'. Link https://dorizzstore.com/ berhasil dikirim otomatis dengan konfirmasi QRIS & order 24 jam.",
       "time": "16 Sep, 07:31 WIB"
     }
+  ],
+  "account_details": [
+    {
+      "username": "cans.utp",
+      "platform_type": "threads",
+      "has_threads": true,
+      "threads_url": "https://www.threads.net/@cans.utp",
+      "ig_url": "https://www.instagram.com/cans.utp/"
+    },
+    {
+      "username": "digitalaccessid",
+      "platform_type": "instagram",
+      "has_threads": false,
+      "threads_url": null,
+      "ig_url": "https://www.instagram.com/digitalaccessid/"
+    },
+    {
+      "username": "digitalassistid_1",
+      "platform_type": "instagram",
+      "has_threads": false,
+      "threads_url": null,
+      "ig_url": "https://www.instagram.com/digitalassistid_1/"
+    },
+    {
+      "username": "digitalbaseid",
+      "platform_type": "instagram",
+      "has_threads": false,
+      "threads_url": null,
+      "ig_url": "https://www.instagram.com/digitalbaseid/"
+    },
+    {
+      "username": "digitalcareid",
+      "platform_type": "instagram",
+      "has_threads": false,
+      "threads_url": null,
+      "ig_url": "https://www.instagram.com/digitalcareid/"
+    },
+    {
+      "username": "digitalcenterid_1",
+      "platform_type": "instagram",
+      "has_threads": false,
+      "threads_url": null,
+      "ig_url": "https://www.instagram.com/digitalcenterid_1/"
+    },
+    {
+      "username": "digitalconnectid",
+      "platform_type": "threads",
+      "has_threads": true,
+      "threads_url": "https://www.threads.net/@digitalconnectid",
+      "ig_url": "https://www.instagram.com/digitalconnectid/"
+    },
+    {
+      "username": "digitalgoods_1",
+      "platform_type": "instagram",
+      "has_threads": false,
+      "threads_url": null,
+      "ig_url": "https://www.instagram.com/digitalgoods_1/"
+    },
+    {
+      "username": "digitalhelperid_",
+      "platform_type": "instagram",
+      "has_threads": false,
+      "threads_url": null,
+      "ig_url": "https://www.instagram.com/digitalhelperid_/"
+    },
+    {
+      "username": "digitalhubindonesia",
+      "platform_type": "threads",
+      "has_threads": true,
+      "threads_url": "https://www.threads.net/@digitalhubindonesia",
+      "ig_url": "https://www.instagram.com/digitalhubindonesia/"
+    },
+    {
+      "username": "digitalmateid",
+      "platform_type": "threads",
+      "has_threads": true,
+      "threads_url": "https://www.threads.net/@digitalmateid",
+      "ig_url": "https://www.instagram.com/digitalmateid/"
+    },
+    {
+      "username": "digitalneedsid_",
+      "platform_type": "instagram",
+      "has_threads": false,
+      "threads_url": null,
+      "ig_url": "https://www.instagram.com/digitalneedsid_/"
+    },
+    {
+      "username": "digitalpartnerid",
+      "platform_type": "instagram",
+      "has_threads": false,
+      "threads_url": null,
+      "ig_url": "https://www.instagram.com/digitalpartnerid/"
+    },
+    {
+      "username": "digitalpointid_1",
+      "platform_type": "instagram",
+      "has_threads": false,
+      "threads_url": null,
+      "ig_url": "https://www.instagram.com/digitalpointid_1/"
+    },
+    {
+      "username": "digitalserviceid_",
+      "platform_type": "instagram",
+      "has_threads": false,
+      "threads_url": null,
+      "ig_url": "https://www.instagram.com/digitalserviceid_/"
+    },
+    {
+      "username": "digitalspaceid_1",
+      "platform_type": "instagram",
+      "has_threads": false,
+      "threads_url": null,
+      "ig_url": "https://www.instagram.com/digitalspaceid_1/"
+    },
+    {
+      "username": "digitalstoreid_1",
+      "platform_type": "instagram",
+      "has_threads": false,
+      "threads_url": null,
+      "ig_url": "https://www.instagram.com/digitalstoreid_1/"
+    },
+    {
+      "username": "digitaltoolsid_",
+      "platform_type": "instagram",
+      "has_threads": false,
+      "threads_url": null,
+      "ig_url": "https://www.instagram.com/digitaltoolsid_/"
+    },
+    {
+      "username": "digitalworksi_1",
+      "platform_type": "instagram",
+      "has_threads": false,
+      "threads_url": null,
+      "ig_url": "https://www.instagram.com/digitalworksi_1/"
+    },
+    {
+      "username": "dorizzdigital",
+      "platform_type": "threads",
+      "has_threads": true,
+      "threads_url": "https://www.threads.net/@dorizzdigital",
+      "ig_url": "https://www.instagram.com/dorizzdigital/"
+    },
+    {
+      "username": "dorizzservice",
+      "platform_type": "threads",
+      "has_threads": true,
+      "threads_url": "https://www.threads.net/@dorizzservice",
+      "ig_url": "https://www.instagram.com/dorizzservice/"
+    },
+    {
+      "username": "jasadigitalid_",
+      "platform_type": "instagram",
+      "has_threads": false,
+      "threads_url": null,
+      "ig_url": "https://www.instagram.com/jasadigitalid_/"
+    },
+    {
+      "username": "layanandigital_",
+      "platform_type": "instagram",
+      "has_threads": false,
+      "threads_url": null,
+      "ig_url": "https://www.instagram.com/layanandigital_/"
+    }
   ]
 }
